@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Flowers for You</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #fef6e4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+        }
+
+        h1 {
+            color: #ff6f91;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: fadeIn 2s;
+        }
+
+        canvas {
+            display: block;
+            border-radius: 15px;
+            border: 3px solid #ff6f91;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: spin 4s linear infinite;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #ff6f91;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #e55d81;
+        }
+
+        #message {
+            margin-top: 20px;
+            color: #ff6f91;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            animation: fadeInMessage 3s ease-in-out;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInMessage {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>🌸 Animated Flowers Just for You! 🌸</h1>
+    <canvas id="flowerCanvas" width="400" height="400"></canvas>
+    <button onclick="createFlowers()">Tap to Create More Flowers</button>
+    <div id="message"></div>
+
+    <script>
+        const canvas = document.getElementById('flowerCanvas');
+        const ctx = canvas.getContext('2d');
+        const messageDiv = document.getElementById('message');
+
+        // Function to draw a flower
+        function drawFlower(x, y, size, petalColor, centerColor) {
+            const petals = 6;
+            const angleStep = (Math.PI * 2) / petals;
+
+            for (let i = 0; i < petals; i++) {
+                const angle = i * angleStep;
+                const petalX = x + Math.cos(angle) * size;
+                const petalY = y + Math.sin(angle) * size;
+
+                ctx.beginPath();
+                ctx.arc(petalX, petalY, size / 2, 0, Math.PI * 2);
+                ctx.fillStyle = petalColor;
+                ctx.fill();
+            }
+
+            // Flower center
+            ctx.beginPath();
+            ctx.arc(x, y, size / 3, 0, Math.PI * 2);
+            ctx.fillStyle = centerColor;
+            ctx.fill();
+        }
+
+        // Function to create random flowers
+        function createFlowers() {
+            const colors = ['#ff6f91', '#ffc3a0', '#f9f871', '#b4e1ff', '#ff85e3'];
+            const bgColors = ['#fceef5', '#fff7e3', '#e6f7ff', '#e8fce3', '#ffe6e6'];
+
+            // Clear canvas and set random background color
+            ctx.fillStyle = bgColors[Math.floor(Math.random() * bgColors.length)];
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < 10; i++) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                const size = Math.random() * 20 + 20;
+                const petalColor = colors[Math.floor(Math.random() * colors.length)];
+                const centerColor = colors[Math.floor(Math.random() * colors.length)];
+
+                drawFlower(x, y, size, petalColor, centerColor);
+            }
+
+            // Display the romantic message after flowers are generated
+            messageDiv.style.opacity = 1; // Ensure the message is visible
+            messageDiv.textContent = "From the very day I fell for you, you made my life easier. You add happiness in my life and I feel like cherishing every happiness while holding your hands. You make my world spin with joy. Will you be mine forever? ❤️";
+        }
+
+        // Initial flower display
+        createFlowers();
+    </script>
+</body>
+</html>
